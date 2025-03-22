@@ -69,10 +69,9 @@ def get_recipes():
     low_fat = request.args.get('lowFat') == 'true'
     quick_prep = request.args.get('quickPrep') == 'true'
     
-    # Start with all recipes
     filtered_recipes = recipes
     
-    # Apply filters if specified
+    #applty filters if specified
     if low_calorie:
         filtered_recipes = [r for r in filtered_recipes if r['nutrition']['Calories'] < 500]
     
@@ -99,7 +98,7 @@ def detect_ingredients():
     if 'image' not in request.files:
         return jsonify({'error': 'No image provided'}), 400
     
-    image = request.files['image']
+    image = request.files['image'] 
     
     if image.filename == '':
         return jsonify({'error': 'No image selected'}), 400
@@ -118,11 +117,10 @@ def find_recipes_with_ingredients():
     
     ingredients = data['ingredients']
     
-    # Use the recipe recommender to find matching recipes
+    #to find matching recipes
     recommender.set_reqs(ingredients)
     matching_recipes = recommender.filter_recipes()
     
-    # Check dietary preferences if they exist in the request
     vegetarian = data.get('vegetarian', False)
     vegan = data.get('vegan', False)
     gluten_free = data.get('glutenFree', False)
@@ -154,8 +152,8 @@ def find_recipes_with_ingredients():
 
 @app.route('/api/popular_recipes', methods=['GET'])
 def get_popular_recipes():
-    # In a real app, this would be based on user ratings or views
-    # For now, just return a random selection
+    
+    '''on the car ride over base this off the RAW_Interactions CSV file idiot'''
     import random
     popular_recipes = random.sample(recipes, min(10, len(recipes)))
     return jsonify(popular_recipes)

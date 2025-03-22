@@ -6,25 +6,11 @@ class RecipeRecommender:
         self.dietary_preferences = []
 
     def set_reqs(self, ingredients, min_match=1, dietary_preferences=None):
-        """
-        Set the requirements for recipe recommendations
-        
-        Args:
-            ingredients (list): List of ingredients to match
-            min_match (int): Minimum number of ingredients that must match
-            dietary_preferences (list): Optional list of dietary preferences (vegetarian, vegan, etc.)
-        """
         self.ingredients = [ing.lower() for ing in ingredients]
         self.min_match = min_match
         self.dietary_preferences = dietary_preferences or []
 
     def filter_recipes(self):
-        """
-        Filter recipes based on ingredients and dietary preferences
-        
-        Returns:
-            list: List of matching recipes or None if no matches
-        """
         filtered_recipes = []
         
         for recipe in self.dataset:
@@ -46,10 +32,10 @@ class RecipeRecommender:
             
             # Check if recipe meets the minimum match requirement
             if total_matches >= self.min_match:
-                # Calculate match score (percentage of user ingredients used)
+                #match score
                 match_percentage = (total_matches / len(self.ingredients)) * 100
                 
-                # Add match score to recipe
+                #Add match scoreto recipe
                 recipe_copy = recipe.copy()
                 recipe_copy['match_score'] = match_percentage
                 filtered_recipes.append(recipe_copy)
@@ -60,17 +46,6 @@ class RecipeRecommender:
         return filtered_recipes if filtered_recipes else None
 
     def recommend_healthy_recipes(self, max_calories=None, min_protein=None, max_fat=None):
-        """
-        Recommend recipes that match ingredients and meet health criteria
-        
-        Args:
-            max_calories (int): Maximum calories per serving
-            min_protein (int): Minimum protein grams per serving
-            max_fat (int): Maximum fat grams per serving
-            
-        Returns:
-            list: List of healthy recipes that match criteria
-        """
         filtered_recipes = self.filter_recipes() or []
         
         # Apply health filters
